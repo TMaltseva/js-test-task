@@ -8,7 +8,7 @@ export const parseMessages = async () => {
   const messageElements = document.querySelectorAll(".message");
 
   if (messageElements.length === 0) {
-    throw new Error("В чате нет сообщений для анализа. Откройте чат.");
+    throw new Error("В чате нет или слишком мало сообщений для анализа.");
   }
 
   const messages = [];
