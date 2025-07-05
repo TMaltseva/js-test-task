@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { MAX_HISTORY_ITEMS, HISTORY_STORAGE_KEY } from "../config/constants";
+import { extractChatTitle } from "../utils/extractChatTitle";
 
 export const useHistory = () => {
   const [history, setHistory] = useState([]);
@@ -44,22 +45,6 @@ export const useHistory = () => {
     }
   }, []);
 
-  const extractChatTitle = useCallback(() => {
-    try {
-      const element = document.querySelector(
-        ".topbar .peer-title[data-peer-id]"
-      );
-
-      if (element && element.textContent?.trim()) {
-        return element.textContent.trim();
-      }
-
-      return "Неизвестный чат";
-    } catch (error) {
-      return "Неизвестный чат";
-    }
-  }, []);
-
   const addToHistory = useCallback(
     (summary, messagesInfo, transcriptionInfo) => {
       if (!summary || summary.trim().length === 0) {
@@ -96,7 +81,7 @@ export const useHistory = () => {
 
       return newItem.id;
     },
-    [extractChatTitle, saveToLocalStorage]
+    [saveToLocalStorage]
   );
 
   const removeItem = useCallback(
