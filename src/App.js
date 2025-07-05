@@ -8,6 +8,8 @@ import { History } from "./Components/History/History";
 import { Tabs } from "./Components/Tabs/Tabs";
 import { useTabs } from "./hooks/useTabs";
 import { useDraggable } from "./hooks/useDraggable";
+import { useTitleObserver } from "./hooks/useTitleObserver";
+
 import {
   CONTAINER_WIDTH,
   CONTAINER_MIN_HEIGHT,
@@ -71,9 +73,18 @@ export const App = () => {
   } = useHistory();
 
   const { activeTab, switchToTab } = useTabs("summary");
-
   const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
   const prevSummaryRef = useRef("");
+
+  const handleChatChange = useCallback(() => {
+    setSelectedHistoryItem(null);
+    generateSummary();
+  }, [generateSummary]);
+
+  useTitleObserver({
+    onChatChange: handleChatChange,
+    checkDelay: 300,
+  });
 
   const { position, isDragging, handleMouseDown } = useDraggable(
     {
